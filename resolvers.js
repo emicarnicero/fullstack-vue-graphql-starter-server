@@ -8,7 +8,17 @@ const createToken = (user, secret, expiresIn) => {
 
 module.exports = {
   Query: {
-    getUser: () => null,
+    getCurrentUser: async (_, args, { User, currentUser }) => {
+      if (!currentUser) {
+        return null;
+      }
+
+      const user = await User.findOne({
+        username: currentUser.username
+      }).populate("favorites");
+
+      return user;
+    },
     getUsers: async (_, args, { User }) => {
       const users = await User.find();
       return users;
