@@ -26,11 +26,14 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  favorites: {
-    type: [mongoose.Schema.Types.ObjectId],
-    required: true,
-    ref: "Post"
-  }
+
+  favorites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Post"
+    }
+  ]
 });
 
 // Create and add avatar to user
