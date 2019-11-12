@@ -65,10 +65,13 @@ module.exports = {
         password
       }).save();
 
-      return { token: createToken(newUser, process.env.SECRET, "1hr") };
+      return {
+        user: newUser,
+        token: createToken(newUser, process.env.SECRET, "1hr")
+      };
     },
     signinUser: async (_, { username, password }, { User }) => {
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ username }).populate("favorites");
 
       if (!user) {
         throw new Error("User not found");
@@ -80,7 +83,7 @@ module.exports = {
         throw new Error("Invalid password");
       }
 
-      return { token: createToken(user, process.env.SECRET, "1hr") };
+      return { user, token: createToken(user, process.env.SECRET, "1hr") };
     }
   }
 };
