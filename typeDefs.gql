@@ -27,7 +27,8 @@ type Message {
   messageUser: User!
 }
 
-type Token {
+type AuthPayload {
+  user: User!
   token: String!
 }
 
@@ -47,6 +48,7 @@ type Mutation {
     description: String!
     creatorId: ID!
   ): Post!
-  signinUser(username: String!, password: String!): Token
-  signupUser(email: String!, username: String!, password: String!): Token
+
+  signinUser(username: String!, password: String!): AuthPayload!
+  signupUser(email: String!, username: String!, password: String!): AuthPayload!
 }
