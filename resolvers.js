@@ -1,5 +1,5 @@
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 const createToken = (user, secret, expiresIn) => {
   const { username, email } = user;
@@ -15,7 +15,7 @@ module.exports = {
 
       const user = await User.findOne({
         username: currentUser.username
-      }).populate("favorites");
+      }).populate('favorites');
 
       return user;
     },
@@ -25,15 +25,15 @@ module.exports = {
     },
     getPosts: async (_, args, { Post }) => {
       const posts = await Post.find()
-        .sort({ createdDate: "desc" })
-        .populate("createdBy");
+        .sort({ createdDate: 'desc' })
+        .populate('createdBy');
       return posts;
     }
   },
   Mutation: {
     addPost: async (
       _,
-      { title, imageUrl, categories, description, creatorId },
+      { input: { title, description, imageUrl, categories, creatorId } },
       { User, Post }
     ) => {
       const user = await User.findOne({ _id: creatorId });
@@ -44,10 +44,10 @@ module.exports = {
 
       const newPost = await new Post({
         title,
+        description,
         imageUrl,
         categories,
-        description,
-        createdBy: creatorId
+        createdBy: user
       }).save();
 
       return newPost;
@@ -56,7 +56,7 @@ module.exports = {
       const user = await User.findOne({ username });
 
       if (user) {
-        throw new Error("User already exists");
+        throw new Error('User already exists');
       }
 
       const newUser = await new User({
@@ -67,23 +67,23 @@ module.exports = {
 
       return {
         user: newUser,
-        token: createToken(newUser, process.env.SECRET, "1hr")
+        token: createToken(newUser, process.env.SECRET, '1hr')
       };
     },
     signinUser: async (_, { username, password }, { User }) => {
-      const user = await User.findOne({ username }).populate("favorites");
+      const user = await User.findOne({ username }).populate('favorites');
 
       if (!user) {
-        throw new Error("User not found");
+        throw new Error('User not found');
       }
 
       const isValidPassword = await bcrypt.compare(password, user.password);
 
       if (!isValidPassword) {
-        throw new Error("Invalid password");
+        throw new Error('Invalid password');
       }
 
-      return { user, token: createToken(user, process.env.SECRET, "1hr") };
+      return { user, token: createToken(user, process.env.SECRET, '1hr') };
     }
   }
 };

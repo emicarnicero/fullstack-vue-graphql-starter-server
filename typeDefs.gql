@@ -12,12 +12,20 @@ type Post {
   _id: ID!
   title: String!
   imageUrl: String!
-  categories: [String]!
   description: String!
+  categories: [String!]!
   createdDate: String
   likes: Int
   createdBy: User!
   message: [Message]
+}
+
+input PostInput {
+  title: String!
+  description: String!
+  imageUrl: String!
+  categories: [String!]!
+  creatorId: String!
 }
 
 type Message {
@@ -41,14 +49,7 @@ type Query {
 }
 
 type Mutation {
-  addPost(
-    title: String!
-    imageUrl: String!
-    categories: [String]!
-    description: String!
-    creatorId: ID!
-  ): Post!
-
   signinUser(username: String!, password: String!): AuthPayload!
   signupUser(email: String!, username: String!, password: String!): AuthPayload!
+  addPost(input: PostInput!): Post!
 }
