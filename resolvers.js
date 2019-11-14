@@ -24,7 +24,12 @@ module.exports = {
       return users;
     },
     getPosts: async (_, args, { Post }) => {
-      const posts = await Post.find()
+      let { filter } =
+        typeof args.options !== 'undefined'
+          ? JSON.parse(args.options)
+          : JSON.parse('{"args": { "filter": "" }}');
+
+      const posts = await Post.find(filter)
         .sort({ createdDate: 'desc' })
         .populate('createdBy');
       return posts;
