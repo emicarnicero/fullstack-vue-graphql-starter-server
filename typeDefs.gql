@@ -17,7 +17,7 @@ type Post {
   createdDate: String
   likes: Int
   createdBy: User!
-  message: [Message]
+  messages: [Message]
 }
 
 input PostInput {
