@@ -38,7 +38,16 @@ module.exports = {
   Mutation: {
     addPost: async (
       _,
-      { input: { title, description, imageUrl, categories, creatorId } },
+      {
+        input: {
+          title,
+          description,
+          imageUrl,
+          categories,
+          creatorId,
+          createdDate
+        }
+      },
       { User, Post }
     ) => {
       const user = await User.findOne({ _id: creatorId });
@@ -52,7 +61,10 @@ module.exports = {
         description,
         imageUrl,
         categories,
-        createdBy: user
+        createdBy: user,
+        createdDate,
+        likes: 0,
+        messages: []
       }).save();
 
       return newPost;

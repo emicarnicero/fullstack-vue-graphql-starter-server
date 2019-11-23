@@ -26,6 +26,7 @@ input PostInput {
   imageUrl: String!
   categories: [String!]!
   creatorId: String!
+  createdDate: String!
 }
 
 type Message {
