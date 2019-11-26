@@ -23,31 +23,32 @@ module.exports = {
       const users = await User.find();
       return users;
     },
-    getPosts: async (_, args, { Post }) => {
-      let { filter } =
-        typeof args.options !== 'undefined'
-          ? JSON.parse(args.options)
-          : JSON.parse('{"args": { "filter": "" }}');
+    getPostsInfinite: async (_, { limit, skip }, { Post }) => {
+      // console.log(`limit: ${limit}, skip: ${skip}`);
 
-      const posts = await Post.find(filter)
+      const posts = await Post.find()
         .sort({ createdDate: 'desc' })
+        .skip(skip)
+        .limit(limit)
         .populate('createdBy');
       return posts;
     }
+    // getPosts: async (_, args, { Post }) => {
+    //   let { filter } =
+    //     typeof args.options !== 'undefined'
+    //       ? JSON.parse(args.options)
+    //       : JSON.parse('{"args": { "filter": "" }}');
+
+    //   const posts = await Post.find(filter)
+    //     .sort({ createdDate: 'desc' })
+    //     .populate('createdBy');
+    //   return posts;
+    // }
   },
   Mutation: {
     addPost: async (
       _,
-      {
-        input: {
-          title,
-          description,
-          imageUrl,
-          categories,
-          creatorId,
-          createdDate
-        }
-      },
+      { title, description, imageUrl, categories, creatorId, createdDate },
       { User, Post }
     ) => {
       const user = await User.findOne({ _id: creatorId });

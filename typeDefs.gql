@@ -45,12 +45,19 @@ type Query {
   getUser: User
   getUsers: [User]
   getPost: Post
-  getPosts(options: String): [Post]
+  getPostsInfinite(limit: Int!, skip: Int!): [Post]
   getCurrentUser: User
 }
 
 type Mutation {
   signinUser(username: String!, password: String!): AuthPayload!
   signupUser(email: String!, username: String!, password: String!): AuthPayload!
-  addPost(input: PostInput!): Post!
+  addPost(
+    title: String!
+    description: String!
+    imageUrl: String!
+    categories: [String!]!
+    creatorId: String!
+    createdDate: String!
+  ): Post!
 }
