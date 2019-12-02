@@ -32,18 +32,20 @@ module.exports = {
         .limit(limit)
         .populate('createdBy');
       return posts;
-    }
-    // getPosts: async (_, args, { Post }) => {
-    //   let { filter } =
-    //     typeof args.options !== 'undefined'
-    //       ? JSON.parse(args.options)
-    //       : JSON.parse('{"args": { "filter": "" }}');
+    },
+    getPosts: async (_, args, { Post }) => {
+      // let { filter } =
+      //   typeof args.options !== 'undefined'
+      //     ? JSON.parse(args.options)
+      //     : JSON.parse('{"args": { "filter": "" }}');
 
-    //   const posts = await Post.find(filter)
-    //     .sort({ createdDate: 'desc' })
-    //     .populate('createdBy');
-    //   return posts;
-    // }
+      // const posts = await Post.find(filter)
+
+      const posts = await Post.find({})
+        .sort({ createdDate: 'desc' })
+        .populate('createdBy');
+      return posts;
+    }
   },
   Mutation: {
     addPost: async (

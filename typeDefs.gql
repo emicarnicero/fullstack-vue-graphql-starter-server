@@ -45,6 +45,7 @@ type Query {
   getUser: User
   getUsers: [User]
   getPost: Post
+  getPosts: [Post]
   getPostsInfinite(limit: Int!, skip: Int!): [Post]
   getCurrentUser: User
 }
